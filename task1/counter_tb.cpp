@@ -20,8 +20,8 @@ int main(int argc, char**argv, char** env){
 
     // initialize simulation inputs
     top -> clk = 1;
-    top -> rst = 1;
-    top -> en = 0;
+    top -> rst = 0;
+    top -> en = 1;
 
 
     // run simulation for many clock cycles
@@ -33,9 +33,16 @@ int main(int argc, char**argv, char** env){
         top -> clk = !top->clk;
         top -> eval();
     }
+    
 
-    top->rst = (i < 2) | (i == 15);
-    top->en = (i>4) ;
+    top -> en = !(top->count >= 0x9 && i <= 11);
+   
+    
+    
+
+    
+    
+
     if (Verilated::gotFinish()) exit(0);
 
     }
