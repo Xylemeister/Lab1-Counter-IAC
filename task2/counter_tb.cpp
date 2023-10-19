@@ -47,7 +47,7 @@ int main(int argc, char**argv, char** env){
     // // ends here
     vbdPlot(int(top->count), 0, 255);
 
-    top->rst = (i < 2) | (i == 15);
+    top->rst = (i < 2) 
     top->en = vbdFlag();
    
     if (Verilated::gotFinish()) exit(0);
