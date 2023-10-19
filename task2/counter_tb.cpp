@@ -1,6 +1,7 @@
 #include "Vcounter.h"
 #include "verilated.h"
 #include "verilated_vcd_c.h"
+#include "vbuddy.cpp"
 
 int main(int argc, char**argv, char** env){
     int i;
@@ -23,9 +24,13 @@ int main(int argc, char**argv, char** env){
     top -> rst = 0;
     top -> en = 1;
 
+    // ini vbuddy
+    if (vbdOpen() != 1) return(-1);
+    vbdHeader("I lOVE EIE");
+
 
     // run simulation for many clock cycles
-    for(i = 0; i < 300; i++){
+    for(i = 0; i < 1000; i++){
 
     //  dump variables into VCD file and toggle clock
     for(clk = 0; clk < 2; clk++){
@@ -34,20 +39,21 @@ int main(int argc, char**argv, char** env){
         top -> eval();
     }
     
+    // // send count value to vbuddy
+    // vbdHex(4, (int(top->count) >> 16) & 0xF);
+    // vbdHex(3, (int(top->count) >> 8) & 0xF);
+    // vbdHex(2, (int(top->count) >> 4) & 0xF);
+    // vbdHex(1, int(top->count) & 0xF);
+    // // ends here
+    vbdPlot(int(top->count), 0, 255);
 
-    top -> en = !(top->count >= 0x9 && i <= 11);
-
-    top -> rst = (top->count == 15);
+    top->rst = (i < 2) | (i == 15);
+    top->en = vbdFlag();
    
-    
-    
-
-    
-    
-
     if (Verilated::gotFinish()) exit(0);
 
     }
+    vbdClose();
     tfp -> close();
     exit(0);
 }
