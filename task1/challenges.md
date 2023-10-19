@@ -14,3 +14,10 @@ This could be achieved by adding the following lines of [codes](counter_tb.cpp#L
 top -> en = !(top->count >= 0x9 && i <= 11);
 ```
 
+2. to add asynchronous reset to the counter
+
+**solution**
+
+![gtkwave2](../images/gtkwave_test2.png)
+
+add posedge rst to the sensitivity list.
